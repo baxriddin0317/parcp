@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sidebar with Accordion</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  
+  <style>
+    /* font inter */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+    body {
+      padding: 20px;
+      font-family: Inter;
+      color: #010218;
+    }
+
+    .mb-20{
+      margin-bottom: 20px;
+    }
+
+    .mt-20{
+      margin-top: 20px;
+    }
+
+    .nav {
+      padding: 12px 20px;
+      background: #000144;
+      color: white;
+      border-radius: 16px;
+    }
+
+    .nav-link{
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+
+    .active{
+      color: #FFF;
+      text-shadow: -1px 1px 4px rgba(60, 255, 164, 0.08), 1px 1px 4px rgba(60, 255, 164, 0.08), 1px 1px 10px rgba(60, 255, 164, 0.08), 0px 1px 2px rgba(60, 255, 164, 0.20);
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: normal;
+      letter-spacing: 0.16px;
+    }
+
+    .toggle, .toggleSidebar{
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #sidebar {
+      background-color: #fff;
+      padding: 20px;
+      min-height: 100vh;
+      height: 100%;
+      width: 240px;
+      max-width: 284px;
+      padding: 12px;
+      border-radius: 16px;
+      box-shadow: 0px 0px 16px 0.4px rgba(115, 115, 140, 0.10), 0px 0px 8px 0.1px rgba(34, 35, 42, 0.04);
+    }
+      
+    #sidebar ul{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      align-self: stretch;
+      gap: 8px;
+    }
+
+    #sidebar li {
+      cursor: pointer;
+      padding: 4px 16px;
+      border-radius: 6px;
+      width: 100%;
+    }
+
+    #sidebar a, #sidebar button {
+      color: black;
+      text-decoration: none;
+      font-size: 12px;
+      color: #010218;
+      width: 100%;
+    }
+
+    #sidebar li.active-link {
+      font-weight: 500;
+      background: #CCE5FF;
+    }
+    
+    .content {
+      border-radius: 16px;
+      background: #FFF;
+      box-shadow: 0px 2px 16px 0px rgba(115, 115, 140, 0.10), 0px 1px 8px 0px rgba(34, 35, 42, 0.04);
+      padding: 48px 40px;
+      margin-left: 20px;
+    }
+    .card {
+      display: flex;
+      height: 200px;
+      /* width: 360px; */
+      padding: 40px 32px;
+      align-items: flex-start;
+      flex: 1 0 0;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      border: 1px solid #CCC;
+      background: #FFF;
+      box-shadow: 0px 1px 8px 0px rgba(30, 32, 51, 0.08);
+    }
+
+    .card a {
+      color: #171982;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      text-decoration: none;
+    }
+
+    .footer {
+      padding: 12px 20px;
+      background: #000144;
+      color: white;
+      border-radius: 16px;
+      text-overflow: ellipsis;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    @media (max-width: 1112px) {
+
+      #sidebar {
+        position: fixed;
+        width: 250px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 999;
+        left: -100vh;
+      }
+      #sidebar.active {
+        transform: translateX(0);
+        left: 20px;
+      }
+
+      .toggleSidebar{
+        display: inline-flex !important;
+      }
+
+      .content {
+        margin-left: 0;
+        padding: 36px 24px;
+      }
+      .card {
+        padding: 32px 18px;
+      }
+    }
+
+    @media (max-width: 568px) {
+      body{
+        padding: 20px 10px;
+      }
+      #sidebar.active {
+        left: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  
+  <div class="d-flex flex-column min-vh-100">
+    <!-- Header -->
+    <header class="mb-20">
+      <nav class="navbar navbar-expand-xl nav">
+        <div class="container-fluid flex-row-reverse flex-xl-row align-items-center ">
+          <button class="toggle me-md-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M3.59998 6.49999C3.59998 5.83725 4.13723 5.29999 4.79998 5.29999H19.2C19.8627 5.29999 20.4 5.83725 20.4 6.49999C20.4 7.16273 19.8627 7.69999 19.2 7.69999H4.79998C4.13723 7.69999 3.59998 7.16273 3.59998 6.49999Z" fill="#FAFAFA"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M3.59998 12.5C3.59998 11.8372 4.13723 11.3 4.79998 11.3H19.2C19.8627 11.3 20.4 11.8372 20.4 12.5C20.4 13.1627 19.8627 13.7 19.2 13.7H4.79998C4.13723 13.7 3.59998 13.1627 3.59998 12.5Z" fill="#FAFAFA"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M3.59998 18.5C3.59998 17.8372 4.13723 17.3 4.79998 17.3H19.2C19.8627 17.3 20.4 17.8372 20.4 18.5C20.4 19.1627 19.8627 19.7 19.2 19.7H4.79998C4.13723 19.7 3.59998 19.1627 3.59998 18.5Z" fill="#FAFAFA"/>
+            </svg>
+          </button>
+          <a class="d-flex align-items-center text-white my-2" style="text-decoration: none;" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M5.11112 0.5C4.86566 0.5 4.66667 0.698985 4.66667 0.944444V5.16667H4.66667C2.08934 5.16667 0 7.256 0 9.83333C0 12.4107 2.08934 14.5 4.66667 14.5H8.88889C9.13435 14.5 9.33333 14.301 9.33333 14.0556L9.33334 9.83333C11.9107 9.83333 14 7.744 14 5.16667C14 2.58934 11.9107 0.5 9.33334 0.5H5.11112ZM9.33334 9.83333H5.11112C4.86566 9.83333 4.66667 9.63435 4.66667 9.38889V5.16667H8.88889C9.13435 5.16667 9.33333 5.36565 9.33333 5.61111L9.33334 9.83333Z" fill="#3CFFA4"/>
+              <path d="M5.06105 0.5C4.84325 0.5 4.66669 0.676564 4.66669 0.894366V5.16667H8.93899C9.15679 5.16667 9.33335 5.34323 9.33335 5.56103L9.33335 9.83333C11.9107 9.83333 14 7.744 14 5.16667C14 2.58934 11.9107 0.5 9.33335 0.5H5.06105Z" fill="#003CFF"/>
+            </svg>
+            <span class="ms-2" style="font-weight: 800;">PARCP</span>
+          </a>
+          <button class="toggleSidebar d-none" id="toggleSidebar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M3.59998 6.49999C3.59998 5.83725 4.13723 5.29999 4.79998 5.29999H19.2C19.8627 5.29999 20.4 5.83725 20.4 6.49999C20.4 7.16273 19.8627 7.69999 19.2 7.69999H4.79998C4.13723 7.69999 3.59998 7.16273 3.59998 6.49999Z" fill="#FAFAFA"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M3.59998 12.5C3.59998 11.8372 4.13723 11.3 4.79998 11.3H19.2C19.8627 11.3 20.4 11.8372 20.4 12.5C20.4 13.1627 19.8627 13.7 19.2 13.7H4.79998C4.13723 13.7 3.59998 13.1627 3.59998 12.5Z" fill="#FAFAFA"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M3.59998 18.5C3.59998 17.8372 4.13723 17.3 4.79998 17.3H19.2C19.8627 17.3 20.4 17.8372 20.4 18.5C20.4 19.1627 19.8627 19.7 19.2 19.7H4.79998C4.13723 19.7 3.59998 19.1627 3.59998 18.5Z" fill="#FAFAFA"/>
+            </svg>
+          </button>
+
+          <div class="collapse justify-content-end navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link text-white ms-md-1" href="#">Home</a>
+              <a class="nav-link active text-white" aria-current="page" href="#">User Access</a>
+              <a class="nav-link text-white ms-md-1" href="#">Admin</a>
+              <a class="nav-link text-white ms-md-1" href="#">CPS Users</a>
+              <a class="nav-link text-white ms-md-1" href="#">Security Groups</a>
+              <a class="nav-link text-white ms-md-1" href="#">Security Actions</a>
+              <a class="nav-link text-white ms-md-1" href="#">Security Requests</a>
+              <a class="nav-link text-white ms-md-1" href="#">Reports</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+      
+
+    <div class="d-flex flex-grow-1">
+      <!-- Sidebar -->
+      <nav id="sidebar" class="sidebar col-3">
+        <ul class="list-unstyled">
+            <li class="active-link"><a href="#">User Access Home</a></li>
+            <li><a href="#">Administration</a></li>
+            <li><a href="#">Validation</a></li>
+            <li><a href="#">Relationships</a></li>
+            <li>
+              <div class="accordion" id="accordionExample">
+                <div class="accordion-item border-0 p-0">
+                  <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 p-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <span class="me-2">AC Desktop</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="13" viewBox="0 0 12 13" fill="none">
+                      <path d="M2.04752 5.71808L5.33789 8.77413C5.66214 9.07529 6.16793 9.07529 6.49219 8.77413L9.78256 5.71808C9.9519 5.56081 9.95997 5.29784 9.8006 5.13074C9.64122 4.96363 9.37475 4.95566 9.20541 5.11294L5.91504 8.16898L2.62467 5.11294C2.45533 4.95566 2.18886 4.96363 2.02948 5.13073C1.87011 5.29784 1.87818 5.56081 2.04752 5.71808Z" fill="#010218"/>
+                    </svg>
+                  </button>
+                  <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-bs-parent="#sidebarAccordion">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="text-decoration-none">Link 3.1</a></li>
+                        <li><a href="#" class="text-decoration-none">Link 3.2</a></li>
+                        <li><a href="#" class="text-decoration-none">Link 3.3</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li><a href="#">Governance</a></li>
+            <li><a href="#">Secure Pay</a></li>
+        </ul>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="content col">
+        <div class="d-flex flex-column-reverse flex-md-row align-items-center justify-content-between" style="margin-bottom: 48px;">
+          <div>
+            <h2 class="font-weight-bold fs-4 mb-4">User Access Home</h2>
+            <p>One page to rule them all. Come here when you want to access everything else. One page to rule <br> them all. Come here when you want to access everything else. One page to rule them all.</p>
+          </div>
+          <div>
+            <img src="./assets/empty.png" alt="">
+          </div>
+        </div>
+          
+        <div class="row">
+          <div class="col-md-6 col-xxl-4">
+              <div class="card">
+                  <div class="d-flex flex-column">
+                    <h5 class="fs-4">Admin</h5>
+                    <p class="card-text fs-7 m-0">Search and view Client Records</p>
+                    <a href="#" style="margin-top: 32px;">Manage the system →</a>
+                  </div>
+                  <div 
+                    style="
+                      display: flex;
+                      padding: 16px;
+                      align-items: center;
+                      gap: 16px;
+                      position: absolute;
+                      right: 25px;
+                      bottom: 16px;
+                      border-radius: 16px;
+                      border: 0.5px solid rgba(255, 255, 255, 0.70);
+                      background: linear-gradient(196deg, rgba(153, 236, 255, 0.80) -2.38%, rgba(0, 85, 255, 0.80) 99.82%);
+                      box-shadow: 0px 0.2px 8px 0px rgba(61, 3, 99, 0.08);
+                      backdrop-filter: blur(8px);"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                      <path d="M10.5 8.7998L30.5 8.7998C33.8137 8.7998 36.5 11.4861 36.5 14.7998V20.0176C36.3348 20.0059 36.1681 20 36 20C32.134 20 29 23.134 29 27C29 28.9241 29.7763 30.6669 31.0329 31.9323C30.1524 32.6702 29.4256 33.5412 28.8813 34.3998H22.5V37.1998C23.6046 37.1999 24.5 38.0953 24.5 39.1998C24.5 40.3044 23.6046 41.1998 22.5 41.1998H14.1C12.9955 41.1998 12.1 40.3044 12.1 39.1998C12.1 38.0953 12.9955 37.1998 14.1 37.1998H18.5V34.3998L10.5 34.3998C7.18629 34.3998 4.5 31.7135 4.5 28.3998L4.5 14.7998C4.5 11.4861 7.18629 8.7998 10.5 8.7998Z" fill="white"/>
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M31 27C31 23.9624 33.4624 21.5 36.5 21.5C39.5376 21.5 42 23.9624 42 27C42 29.178 40.734 31.0604 38.8977 31.9513C40.7648 32.6693 42.204 34.1295 43.0035 35.4826C43.2941 35.9743 43.4936 36.5494 43.4999 37.1843C43.5061 37.8275 43.3124 38.3988 43.0211 38.8682C42.4814 39.7377 41.6145 40.2572 40.9377 40.5682C39.537 41.212 37.7497 41.5 36.5 41.5C35.2503 41.5 33.463 41.212 32.0623 40.5682C31.3855 40.2572 30.5186 39.7377 29.9789 38.8682C29.6876 38.3988 29.4939 37.8275 29.5001 37.1843C29.5064 36.5494 29.7059 35.9743 29.9965 35.4826C30.796 34.1295 32.2352 32.6693 34.1023 31.9512C32.266 31.0604 31 29.178 31 27ZM36.5 25.5C35.6716 25.5 35 26.1716 35 27C35 27.8284 35.6716 28.5 36.5 28.5C37.3284 28.5 38 27.8284 38 27C38 26.1716 37.3284 25.5 36.5 25.5ZM36.5 35.5C35.5392 35.5 34.5194 36.1178 33.8211 36.9729C34.5953 37.3048 35.7315 37.5 36.5 37.5C37.2685 37.5 38.4047 37.3048 39.1789 36.9729C38.4806 36.1178 37.4608 35.5 36.5 35.5Z" fill="white"/>
+                      </svg>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-6 col-xxl-4">
+            <div class="card">
+                <div class="d-flex flex-column">
+                  <h5 class=" fs-4">CPS Users</h5>
+                  <p class="card-text fs-7 m-0">Search and view Client Records</p>
+                  <a href="#" style="margin-top: 32px;">Manage the system →</a>
+                </div>
+                <div 
+                  style="
+                    display: flex;
+                    padding: 16px;
+                    align-items: center;
+                    gap: 16px;
+                    position: absolute;
+                    right: 25px;
+                    bottom: 16px;
+                    border-radius: 16px;
+                    border: 0.5px solid rgba(255, 255, 255, 0.70);
+                    background: linear-gradient(196deg, rgba(255, 234, 0, 0.80) -2.38%, rgba(255, 136, 0, 0.80) 99.82%);
+                    box-shadow: 0px 0.2px 8px 0px rgba(61, 3, 99, 0.08);
+                    backdrop-filter: blur(8px);"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                    <path d="M24 26C28.4183 26 32 22.4183 32 18C32 13.5817 28.4183 10 24 10C19.5817 10 16 13.5817 16 18C16 22.4183 19.5817 26 24 26Z" fill="white"/>
+                    <path d="M12.524 36C9.68408 41.3401 19.0847 44 24 44C28.9153 44 38.3159 41.3401 35.476 36C33.3404 31.9842 29.0207 28 24 28C18.9792 28 14.6596 31.9842 12.524 36Z" fill="white"/>
+                    <path d="M15 24C15 26.2091 13.2091 28 11 28C8.79085 28 6.99998 26.2091 6.99998 24C6.99998 21.7909 8.79085 20 11 20C13.2091 20 15 21.7909 15 24Z" fill="white"/>
+                    <path d="M5.79145 38.8892C5.30037 39.8786 4.1002 40.2825 3.1108 39.7915C2.1214 39.3004 1.71744 38.1002 2.20852 37.1108C2.94329 35.6305 4.05544 34.1441 5.45448 33.0069C6.85407 31.8691 8.64752 31 10.6943 31C11.7989 31 12.6943 31.8954 12.6943 33C12.6943 34.1046 11.7989 35 10.6943 35C9.81236 35 8.88154 35.3759 7.97759 36.1107C7.07309 36.846 6.30246 37.8596 5.79145 38.8892Z" fill="white"/>
+                    <path d="M41.6201 24C41.6201 26.2091 39.8292 28 37.6201 28C35.411 28 33.6201 26.2091 33.6201 24C33.6201 21.7909 35.411 20 37.6201 20C39.8292 20 41.6201 21.7909 41.6201 24Z" fill="white"/>
+                    <path d="M45.8003 37.1108C46.2913 38.1002 45.8874 39.3004 44.898 39.7915C43.9086 40.2825 42.7084 39.8786 42.2173 38.8892C41.7063 37.8596 40.9357 36.846 40.0312 36.1107C39.1272 35.3759 38.1964 35 37.3144 35C36.2099 35 35.3144 34.1046 35.3144 33C35.3144 31.8954 36.2099 31 37.3144 31C39.3612 31 41.1547 31.8691 42.5543 33.0069C43.9533 34.1441 45.0655 35.6305 45.8003 37.1108Z" fill="white"/>
+                  </svg>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xxl-4">
+            <div class="card">
+                <div class="d-flex flex-column">
+                  <h5 class=" fs-4">Security Groups</h5>
+                  <p class="card-text fs-7 m-0">Search and view Client Records</p>
+                  <a href="#" style="margin-top: 32px;">Manage the system →</a>
+                </div>
+                <div 
+                  style="
+                    display: flex;
+                    padding: 16px;
+                    align-items: center;
+                    gap: 16px;
+                    position: absolute;
+                    right: 25px;
+                    bottom: 16px;
+                    border-radius: 16px;
+                    border: 0.5px solid rgba(255, 255, 255, 0.70);
+                    background: linear-gradient(196deg, rgba(77, 255, 145, 0.80) -2.38%, rgba(119, 204, 0, 0.80) 99.82%);
+                    box-shadow: 0px 0.2px 8px 0px rgba(61, 3, 99, 0.08);
+                    backdrop-filter: blur(8px);"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M36.5797 10.173L33.4846 8.8L26.2315 5.89403C24.7992 5.32018 23.2008 5.32018 21.7685 5.89403L14.5154 8.8L11.4203 10.173C9.3743 11.0806 7.99981 13.0489 8 15.2872C8.00033 19.2352 8.30046 25.5325 9.98755 29.7C12.1414 35.0205 17.9322 39.2991 21.3579 41.4622C22.9827 42.4881 25.0173 42.4881 26.6421 41.4622C30.0678 39.2991 35.8586 35.0205 38.0124 29.7C39.6995 25.5325 39.9997 19.2352 40 15.2872C40.0002 13.0489 38.6257 11.0806 36.5797 10.173ZM29.3922 22.4142C30.1733 21.6331 30.1733 20.3668 29.3922 19.5858C28.6112 18.8047 27.3448 18.8047 26.5638 19.5858L22.6863 23.4632L22.1225 22.8995C21.3415 22.1184 20.0751 22.1184 19.2941 22.8995C18.513 23.6805 18.513 24.9468 19.2941 25.7279L21.2721 27.7059C22.0531 28.4869 23.3195 28.4869 24.1005 27.7059L29.3922 22.4142Z" fill="white"/>
+                  </svg>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xxl-4">
+            <div class="card">
+                <div class="d-flex flex-column">
+                  <h5 class=" fs-4">Security Actions</h5>
+                  <p class="card-text fs-7 m-0">Search and view Client Records</p>
+                  <a href="#" style="margin-top: 32px;">Manage the system →</a>
+                </div>
+                <div 
+                  style="
+                    display: flex;
+                    padding: 16px;
+                    align-items: center;
+                    gap: 16px;
+                    position: absolute;
+                    right: 25px;
+                    bottom: 16px;
+                    border-radius: 16px;
+                    border: 0.5px solid rgba(255, 255, 255, 0.70);
+                    background: linear-gradient(196deg, rgba(37, 188, 244, 0.80) -2.38%, rgba(0, 138, 83, 0.80) 99.82%);
+                    box-shadow: 0px 0.2px 8px 0px rgba(61, 3, 99, 0.08);
+                    backdrop-filter: blur(8px);"
+                >
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 20V14C12 7.37258 17.3726 2 24 2C30.6274 2 36 7.37258 36 14V20C39.3137 20 42 22.6863 42 26V38C42 41.3137 39.3137 44 36 44H12C8.68629 44 6 41.3137 6 38V26C6 22.6863 8.68629 20 12 20ZM16 14C16 9.58172 19.5817 6 24 6C28.4183 6 32 9.58172 32 14V20H16V14ZM24 28C25.1046 28 26 28.8954 26 30V34C26 35.1046 25.1046 36 24 36C22.8954 36 22 35.1046 22 34V30C22 28.8954 22.8954 28 24 28Z" fill="white"/>
+                </svg>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xxl-4">
+            <div class="card">
+                <div class="d-flex flex-column">
+                  <h5 class=" fs-4">Security Requests</h5>
+                  <p class="card-text fs-7 m-0">Search and view Client Records</p>
+                  <a href="#" style="margin-top: 32px;">Manage the system →</a>
+                </div>
+                <div 
+                  style="
+                    display: flex;
+                    padding: 16px;
+                    align-items: center;
+                    gap: 16px;
+                    position: absolute;
+                    right: 25px;
+                    bottom: 16px;
+                    border-radius: 16px;
+                    border: 0.5px solid rgba(255, 255, 255, 0.70);
+                    background: linear-gradient(196deg, rgba(255, 153, 236, 0.80) -2.38%, rgba(151, 9, 246, 0.80) 99.82%);
+                    box-shadow: 0px 0.2px 8px 0px rgba(61, 3, 99, 0.08);
+                    backdrop-filter: blur(8px);"
+                >
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                  <path d="M24.5694 14.4L36.0027 14.4C39.3164 14.4 42 17.0863 42 20.4V29.8368L38.351 28.2777C37.4845 27.9074 36.5155 27.9074 35.649 28.2777L31.6648 29.98L30.0379 30.7496C28.8163 31.3275 27.9967 32.5718 28 33.9847C28.0039 35.6365 28.0914 37.9291 28.4588 40H12C8.68629 40 6 37.3137 6 34L6 13.1338C6 10.2985 8.2985 8 11.1338 8L16.2287 8C17.6657 8 19.8724 10.3558 21.5249 12.12C22.1228 12.7582 22.6481 13.319 23.0381 13.6628C23.3172 13.9087 24.1974 14.4 24.5694 14.4Z" fill="white"/>
+                  <path d="M40.8678 33.6052L39.9639 33.2L37.7506 32.3039C37.2692 32.109 36.7308 32.109 36.2494 32.3039L34.0361 33.2L33.1322 33.6052C32.4535 33.9094 31.9982 34.5644 32.0001 35.3082C32.0032 36.5579 32.1022 38.5047 32.6211 39.8C33.2819 41.4494 35.0379 42.7817 36.1148 43.4762C36.6581 43.8266 37.3419 43.8266 37.8852 43.4762C38.9621 42.7817 40.7181 41.4494 41.3789 39.8C41.8978 38.5047 41.9968 36.5579 41.9999 35.3082C42.0018 34.5644 41.5465 33.9094 40.8678 33.6052Z" fill="white"/>
+                </svg>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xxl-4">
+            <div class="card">
+                <div class="d-flex flex-column">
+                  <h5 class=" fs-4">Reports</h5>
+                  <p class="card-text fs-7 m-0">Search and view Client Records</p>
+                  <a href="#" style="margin-top: 32px;">Manage the system →</a>
+                </div>
+                <div 
+                  style="
+                    display: flex;
+                    padding: 16px;
+                    align-items: center;
+                    gap: 16px;
+                    position: absolute;
+                    right: 25px;
+                    bottom: 16px;
+                    border-radius: 16px;
+                    border: 0.5px solid rgba(255, 255, 255, 0.70);
+                    background: linear-gradient(196deg, rgba(255, 153, 155, 0.80) -2.38%, rgba(213, 7, 58, 0.80) 99.82%);
+                    box-shadow: 0px 0.2px 8px 0px rgba(61, 3, 99, 0.08);
+                    backdrop-filter: blur(8px);"
+                >
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M38 4L10 4C6.68629 4 4 6.6863 4 10L4 30C4 33.3137 6.68629 36 10 36H21.1716L14.5858 42.5858C13.8047 43.3668 13.8047 44.6332 14.5858 45.4142C15.3668 46.1953 16.6332 46.1953 17.4142 45.4142L24 38.8284L30.5858 45.4142C31.3668 46.1953 32.6332 46.1953 33.4142 45.4142C34.1953 44.6332 34.1953 43.3668 33.4142 42.5858L26.8284 36H38C41.3137 36 44 33.3137 44 30V10C44 6.68629 41.3137 4 38 4ZM10.5858 28.7477C9.80474 27.9667 9.80474 26.7004 10.5858 25.9193L18.5858 17.9193C19.3118 17.1932 20.4698 17.135 21.2651 17.7845L23.8128 19.8651L30.5356 12.638C30.9131 12.2322 31.442 12.0013 31.9961 12.0002C32.5503 11.9991 33.0801 12.228 33.4591 12.6323L37.4591 16.899C38.2145 17.7048 38.1737 18.9705 37.3679 19.7259C36.5621 20.4814 35.2964 20.4406 34.5409 19.6347L32.0057 16.9305L25.4644 23.9624C24.7461 24.7345 23.5517 24.8163 22.7349 24.1492L20.1355 22.0264L13.4142 28.7477C12.6332 29.5288 11.3668 29.5288 10.5858 28.7477Z" fill="white"/>
+                </svg>
+                </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer d-flex mt-20">
+      <p class="m-0 py-2">© 2024 Professional Administrative Regulatory Compliance Policies. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const toggleButton = document.getElementById('toggleSidebar');
+
+    toggleButton.addEventListener('click', function () {
+      sidebar.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>
