@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sidebar with Accordion</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <!-- css style -->
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="d-flex flex-column min-vh-100">
+      <!-- Header -->
+      <header class="mb-20">
+        <nav class="navbar navbar-expand-xl nav">
+          <div
+            class="container-fluid flex-row-reverse flex-xl-row align-items-center"
+          >
+            <!-- toggle menu -->
+            <button
+              class="toggle me-md-3"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNavAltMarkup"
+              aria-controls="navbarNavAltMarkup"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="25"
+                viewBox="0 0 24 25"
+                fill="none"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M3.59998 6.49999C3.59998 5.83725 4.13723 5.29999 4.79998 5.29999H19.2C19.8627 5.29999 20.4 5.83725 20.4 6.49999C20.4 7.16273 19.8627 7.69999 19.2 7.69999H4.79998C4.13723 7.69999 3.59998 7.16273 3.59998 6.49999Z"
+                  fill="#FAFAFA"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M3.59998 12.5C3.59998 11.8372 4.13723 11.3 4.79998 11.3H19.2C19.8627 11.3 20.4 11.8372 20.4 12.5C20.4 13.1627 19.8627 13.7 19.2 13.7H4.79998C4.13723 13.7 3.59998 13.1627 3.59998 12.5Z"
+                  fill="#FAFAFA"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M3.59998 18.5C3.59998 17.8372 4.13723 17.3 4.79998 17.3H19.2C19.8627 17.3 20.4 17.8372 20.4 18.5C20.4 19.1627 19.8627 19.7 19.2 19.7H4.79998C4.13723 19.7 3.59998 19.1627 3.59998 18.5Z"
+                  fill="#FAFAFA"
+                />
+              </svg>
+            </button>
+            <!-- logo -->
+            <a
+              class="d-flex align-items-center text-white my-2"
+              style="text-decoration: none"
+              href="#"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="15"
+                viewBox="0 0 14 15"
+                fill="none"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M5.11112 0.5C4.86566 0.5 4.66667 0.698985 4.66667 0.944444V5.16667H4.66667C2.08934 5.16667 0 7.256 0 9.83333C0 12.4107 2.08934 14.5 4.66667 14.5H8.88889C9.13435 14.5 9.33333 14.301 9.33333 14.0556L9.33334 9.83333C11.9107 9.83333 14 7.744 14 5.16667C14 2.58934 11.9107 0.5 9.33334 0.5H5.11112ZM9.33334 9.83333H5.11112C4.86566 9.83333 4.66667 9.63435 4.66667 9.38889V5.16667H8.88889C9.13435 5.16667 9.33333 5.36565 9.33333 5.61111L9.33334 9.83333Z"
+                  fill="#3CFFA4"
+                />
+                <path
+                  d="M5.06105 0.5C4.84325 0.5 4.66669 0.676564 4.66669 0.894366V5.16667H8.93899C9.15679 5.16667 9.33335 5.34323 9.33335 5.56103L9.33335 9.83333C11.9107 9.83333 14 7.744 14 5.16667C14 2.58934 11.9107 0.5 9.33335 0.5H5.06105Z"
+                  fill="#003CFF"
+                />
+              </svg>
+              <span class="ms-2" style="font-weight: 800">PARCP</span>
+            </a>
+            <!-- toggle sidebar -->
+            <button class="toggleSidebar d-none" id="toggleSidebar">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="25"
+                viewBox="0 0 24 25"
+                fill="none"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M3.59998 6.49999C3.59998 5.83725 4.13723 5.29999 4.79998 5.29999H19.2C19.8627 5.29999 20.4 5.83725 20.4 6.49999C20.4 7.16273 19.8627 7.69999 19.2 7.69999H4.79998C4.13723 7.69999 3.59998 7.16273 3.59998 6.49999Z"
+                  fill="#FAFAFA"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M3.59998 12.5C3.59998 11.8372 4.13723 11.3 4.79998 11.3H19.2C19.8627 11.3 20.4 11.8372 20.4 12.5C20.4 13.1627 19.8627 13.7 19.2 13.7H4.79998C4.13723 13.7 3.59998 13.1627 3.59998 12.5Z"
+                  fill="#FAFAFA"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M3.59998 18.5C3.59998 17.8372 4.13723 17.3 4.79998 17.3H19.2C19.8627 17.3 20.4 17.8372 20.4 18.5C20.4 19.1627 19.8627 19.7 19.2 19.7H4.79998C4.13723 19.7 3.59998 19.1627 3.59998 18.5Z"
+                  fill="#FAFAFA"
+                />
+              </svg>
+            </button>
+            <!-- links -->
+            <div
+              class="collapse justify-content-end navbar-collapse"
+              id="navbarNavAltMarkup"
+            >
+              <div class="navbar-nav">
+                <a class="nav-link text-white ms-md-1" href="#">Home</a>
+                <a
+                  class="nav-link active text-white"
+                  aria-current="page"
+                  href="#"
+                  >User Access</a
+                >
+                <a class="nav-link text-white ms-md-1" href="#">Admin</a>
+                <a class="nav-link text-white ms-md-1" href="#">CPS Users</a>
+                <a class="nav-link text-white ms-md-1" href="#"
+                  >Security Groups</a
+                >
+                <a class="nav-link text-white ms-md-1" href="#"
+                  >Security Actions</a
+                >
+                <a class="nav-link text-white ms-md-1" href="#"
+                  >Security Requests</a
+                >
+                <a class="nav-link text-white ms-md-1" href="#">Reports</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <!-- main part -->
+      <div class="d-flex flex-grow-1 align-items-stretch">
+        <!-- saidbar part -->
+        <nav></nav>
+        <!-- main content -->
+      </div>
+
+      <!-- Footer -->
+      <!-- <footer class="footer d-flex mt-20">
+        <p class="m-0 py-2">
+          © 2024 Professional Administrative Regulatory Compliance Policies. All
+          rights reserved.
+        </p>
+      </footer> -->
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const sidebar = document.getElementById("sidebar");
+      const toggleButton = document.getElementById("toggleSidebar");
+
+      toggleButton.addEventListener("click", function () {
+        sidebar.classList.toggle("active");
+      });
+    </script>
+  </body>
+</html>

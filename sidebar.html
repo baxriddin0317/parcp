@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sidebar with Accordion</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <!-- css style -->
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="d-flex flex-column min-vh-100">
+      <!-- header -->
+
+      <!-- main part -->
+      <div class="d-flex flex-grow-1 align-items-stretch">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="sidebar col-3">
+          <ul class="list-unstyled">
+            <li><a href="#">User Access Home</a></li>
+            <li><a href="#">Administration</a></li>
+            <li><a href="#">Validation</a></li>
+            <li><a href="#">Relationships</a></li>
+            <li>
+              <div class="accordion" id="accordionExample">
+                <div class="accordion-item border-0 p-0">
+                  <button
+                    class="btn btn-toggle d-inline-flex align-items-center rounded border-0 p-0 collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseThree"
+                    aria-expanded="false"
+                    aria-controls="collapseThree"
+                  >
+                    <span class="me-2">AC Desktop</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="13"
+                      viewBox="0 0 12 13"
+                      fill="none"
+                    >
+                      <path
+                        d="M2.04752 5.71808L5.33789 8.77413C5.66214 9.07529 6.16793 9.07529 6.49219 8.77413L9.78256 5.71808C9.9519 5.56081 9.95997 5.29784 9.8006 5.13074C9.64122 4.96363 9.37475 4.95566 9.20541 5.11294L5.91504 8.16898L2.62467 5.11294C2.45533 4.95566 2.18886 4.96363 2.02948 5.13073C1.87011 5.29784 1.87818 5.56081 2.04752 5.71808Z"
+                        fill="#010218"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    id="collapseThree"
+                    class="collapse"
+                    aria-labelledby="headingThree"
+                    data-bs-parent="#sidebarAccordion"
+                  >
+                    <ul
+                      class="btn-toggle-nav list-unstyled fw-normal pb-1 small"
+                    >
+                      <li>
+                        <a href="#" class="text-decoration-none">Link 3.1</a>
+                      </li>
+                      <li>
+                        <a href="#" class="text-decoration-none">Link 3.2</a>
+                      </li>
+                      <li>
+                        <a href="#" class="text-decoration-none">Link 3.3</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li><a href="#">Governance</a></li>
+            <li><a href="#">Secure Pay</a></li>
+          </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content col"></main>
+      </div>
+
+      <!-- footer -->
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const sidebar = document.getElementById("sidebar");
+      const toggleButton = document.getElementById("toggleSidebar");
+
+      toggleButton.addEventListener("click", function () {
+        sidebar.classList.toggle("active");
+      });
+    </script>
+  </body>
+</html>
