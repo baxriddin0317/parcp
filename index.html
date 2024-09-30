@@ -547,7 +547,7 @@
       });
 
       window.onload = function() {
-        if (window.innerHeight < 900) {
+        if (window.innerHeight > 900) {
           document.body.style.overflowY = 'scroll';  // Allow scrolling
         } else {
           document.body.style.overflowY = 'hidden';  // Disable scrolling
@@ -555,7 +555,7 @@
       };
 
       window.onresize = function() {
-        if (window.innerHeight < 900) {
+        if (window.innerHeight > 900) {
           document.body.style.overflowY = 'scroll';
         } else {
           document.body.style.overflowY = 'hidden';

@@ -6,8 +6,8 @@ body {
   font-family: Inter;
   color: #010218;
   background: #f7f7f7;
-  height: 100vh;
-  overflow: hidden;
+  /* height: 100vh;
+  overflow: hidden; */
 }
 
 .mb-20 {
